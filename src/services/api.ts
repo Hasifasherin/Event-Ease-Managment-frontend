@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 
@@ -22,24 +22,25 @@ api.interceptors.request.use((config) => {
       }
     }
   }
+
   return config;
 });
 
-/* ================= RESPONSE INTERCEPTOR  ================= */
+/* ================= RESPONSE INTERCEPTOR ================= */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // If token expired or invalid
     if (error.response?.status === 401) {
       console.log("Unauthorized - Auto Logout");
 
-      localStorage.removeItem("user"); // safer than clearing everything
+      localStorage.removeItem("user");
 
-      // Optional: redirect user to login page
       if (typeof window !== "undefined") {
-        window.location.href = "/login";
+        window.location.href = "/auth/login";
       }
     }
+
+    console.error("API Error:", error.response?.data || error.message);
 
     return Promise.reject(error);
   }
