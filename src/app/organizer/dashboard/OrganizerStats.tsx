@@ -1,26 +1,32 @@
 import { Calendar, Ticket, CreditCard } from "lucide-react";
 
+interface Stats {
+  totalEvents: number;
+  totalBookings: number;
+  totalRevenue: number;
+}
+
 interface Props {
-  stats: any;
+  stats?: Stats;
 }
 
 export default function OrganizerStats({ stats }: Props) {
   const cards = [
     {
       title: "My Events",
-      value: stats?.totalEvents || 0,
+      value: stats?.totalEvents ?? 0,
       icon: Calendar,
       color: "bg-blue-100 text-blue-600",
     },
     {
       title: "Bookings",
-      value: stats?.totalBookings || 0,
+      value: stats?.totalBookings ?? 0,
       icon: Ticket,
       color: "bg-green-100 text-green-600",
     },
     {
       title: "Revenue",
-      value: `₹ ${stats?.totalRevenue || 0}`,
+      value: `₹ ${stats?.totalRevenue ?? 0}`,
       icon: CreditCard,
       color: "bg-purple-100 text-purple-600",
     },
@@ -43,7 +49,9 @@ export default function OrganizerStats({ stats }: Props) {
               </h2>
             </div>
 
-            <div className={`w-12 h-12 flex items-center justify-center rounded-lg ${card.color}`}>
+            <div
+              className={`w-12 h-12 flex items-center justify-center rounded-lg ${card.color}`}
+            >
               <Icon size={22} />
             </div>
           </div>
